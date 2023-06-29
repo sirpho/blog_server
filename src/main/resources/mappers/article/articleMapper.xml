@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirpho.blog.modules.article.dao.ArticleDao">
+
+    <resultMap id="ArticleMap" type="com.sirpho.blog.modules.article.entity.ArticleEntity">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="author" column="author"/>
+        <result property="wordCount" column="word_count"/>
+        <result property="creationType" column="creation_type"/>
+        <result property="source" column="source"/>
+        <result property="published" column="published"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+        <!--使用select指定的select语句抓取关联实体，将当前实体的id列的值作为参数错传给select语句ofType属性指定关联实体（集合元素）的类型-->
+        <collection property="tags" javaType="java.util.ArrayList" ofType="java.lang.String" column="{articleId=id}"
+                    select="com.sirpho.blog.modules.article.dao.TagDao.getTagsByArticleId" />
+        <collection property="categories" javaType="java.util.ArrayList" ofType="java.lang.String" column="{articleId=id}"
+                    select="com.sirpho.blog.modules.article.dao.CategoryDao.getCategoriesByArticleId" />
+    </resultMap>
+
+    <select id="queryList" resultMap="ArticleMap">
+        select
+        id,
+        title,
+        summary,
+        author,
+        word_count,
+        creation_type,
+        source,
+        published,
+        create_time,
+        last_update_time
+        FROM
+        article
+        WHERE
+        deleted = 'N'
+        <if test="params.keyword!=null and params.keyword!=''">
+            and title like CONCAT('%', #{params.keyword}, '%')
+        </if>
+        <if test="params.category!=null and params.category!=''">
+            and id IN (
+            SELECT
+            ship.article_id
+            FROM
+            category_relationships ship
+            LEFT JOIN category ca
+            ON ship.category_id = ca.id AND ca.deleted = 'N'
+            where ca.name = #{params.category}
+            )
+        </if>
+
+        <if test="params.tag!=null and params.tag!=''">
+            and id IN (
+            SELECT
+            ship.article_id
+            FROM
+            tag_relationships ship
+            LEFT JOIN tag ta
+            ON ship.tag_id = ta.id AND ta.deleted = 'N'
+            where ta.name = #{params.tag}
+            )
+        </if>
+        ORDER BY create_time DESC
+
+    </select>
+</mapper>

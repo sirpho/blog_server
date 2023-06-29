@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirpho.blog.modules.article.dao.TagDao">
+
+    <select id="getTagsByArticleId" resultType="java.lang.String">
+        select t.`name`
+        from tag t
+                 left join tag_relationships tr on t.id = tr.tag_id
+        where tr.article_id = #{articleId}
+          and t.deleted = 'N'
+        order by tr.`sort_order`
+    </select>
+
+    <select id="getTagList" resultType="com.sirpho.blog.modules.article.vo.TagVO">
+        SELECT ca.id,
+               ca.NAME,
+               count(ship.tag_id) as count
+        FROM tag ca
+                 LEFT JOIN tag_relationships ship ON ship.tag_id = ca.id
+        WHERE ca.deleted = 'N'
+        GROUP BY ca.id
+    </select>
+</mapper>

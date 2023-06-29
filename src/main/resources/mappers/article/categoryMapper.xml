@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sirpho.blog.modules.article.dao.CategoryDao">
+
+    <select id="getCategoriesByArticleId" resultType="java.lang.String">
+        select t.`name`
+        from category t
+                 left join category_relationships tr on t.id = tr.category_id
+        where tr.article_id = #{articleId}
+          and t.deleted = 'N'
+        order by tr.`sort_order`
+    </select>
+
+    <select id="getCategoryList" resultType="com.sirpho.blog.modules.article.vo.CategoryVO">
+        SELECT
+            ca.id,
+            ca.NAME,
+            count(ship.category_id) as count
+        FROM
+            category ca
+            LEFT JOIN category_relationships ship ON ship.category_id = ca.id
+        WHERE
+            ca.deleted = 'N'
+        GROUP BY ca.id
+    </select>
+</mapper>

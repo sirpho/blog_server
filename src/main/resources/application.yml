@@ -1,0 +1,44 @@
+server:
+  port: 23456
+spring:
+  datasource:
+    url: jdbc:mariadb://192.168.37.130:3306/blog?characterEncoding=utf-8&useSSL=false&useTimezone=true
+    username: admin
+    password: qwe123123
+    driver-class-name: org.mariadb.jdbc.Driver
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mysql://10.254.4.6:3306/blog?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&enabledTLSProtocols=TLSv1.2
+#    username: root
+#    password: root
+
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      auto-commit: true
+      minimum-idle: 2
+      idle-timeout: 60000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      pool-name: DatebookHikariCP
+      maximum-pool-size: 5
+  servlet:
+    multipart:
+      max-file-size: 1074790400
+      max-request-size: 1074790400
+mybatis-plus:
+  mapper-locations: classpath*:/mappers/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.sirpho.blog.modules.*.entry
+  global-config:
+    db-config:
+      #主键类型
+      id-type: assign_uuid
+      #驼峰下划线转换
+      table-underline: true
+  #输出sql日志
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: false
+    map-underscore-to-camel-case: true
+upload:
+  path: '/var/www/html/static'
+  host: 'http://blog.sirpho.top/static/'
