@@ -2,14 +2,14 @@ server:
   port: 23456
 spring:
   datasource:
-    url: jdbc:mariadb://192.168.37.130:3306/blog?characterEncoding=utf-8&useSSL=false&useTimezone=true
-    username: admin
-    password: qwe123123
-    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://192.168.37.130:3306/blog?characterEncoding=utf-8&useSSL=false&useTimezone=true
+#    username: admin
+#    password: qwe123123
 #    driver-class-name: org.mariadb.jdbc.Driver
-#    url: jdbc:mysql://10.254.4.6:3306/blog?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&enabledTLSProtocols=TLSv1.2
-#    username: root
-#    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.254.4.6:3306/blog?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&enabledTLSProtocols=TLSv1.2
+    username: root
+    password: root
 
     type: com.zaxxer.hikari.HikariDataSource
     hikari:

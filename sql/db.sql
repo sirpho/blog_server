@@ -83,3 +83,5 @@ CREATE TABLE `user` (
                         `expired` varchar(20) DEFAULT NULL COMMENT 'token过期时间 YYYY-MM-DD hh:mm:ss',
                         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_ci;
+
+INSERT INTO `user` (`id`, `name`, `password`) VALUES ('1', 'sirpho', 'EBCBF97EC1D80C0388D39BF508039BAA')
